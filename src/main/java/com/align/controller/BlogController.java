@@ -35,12 +35,12 @@ public class BlogController {
         return blogService.getAllPosts(name);
     }
 
-    @GetMapping(value = "/followings/{name} ")
+    @GetMapping(value = "/followings/{name}")
     public List<User> getFollowing(@PathVariable("name") String name) {
         return blogService.getFollowingList(name);
     }
 
-    @GetMapping(value = "/followers/{name} ")
+    @GetMapping(value = "/followers/{name}")
     public List<User> getFollowers(@PathVariable("name") String name) {
         return blogService.getFollowersByName(name);
     }
