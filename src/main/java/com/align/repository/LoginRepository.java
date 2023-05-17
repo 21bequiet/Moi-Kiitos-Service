@@ -4,11 +4,14 @@ import com.align.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
+/**
+ * @author Jason Chen
+ * @version 1.0
+ * @summary This used to persistence data for user related.
+ */
 @Repository
 @Slf4j
 public class LoginRepository {

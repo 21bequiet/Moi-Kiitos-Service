@@ -2,12 +2,17 @@ package com.align.controller;
 
 import com.align.entity.Following;
 import com.align.entity.Post;
+import com.align.entity.User;
 import com.align.service.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+ * @author Jason Chen
+ * @version 1.0
+ * @summary This used to blog function, list post and feed list, etc..
+ */
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
@@ -29,9 +34,13 @@ public class BlogController {
         return blogService.getAllPosts(name);
     }
 
-    @GetMapping(value = "/following/{name} {searchName}")
-    public Following follow(@PathVariable("name") String name, @PathVariable("searchName") String searchName) {
-        return blogService.search(name,searchName);
+    @GetMapping(value = "/followings/{name} ")
+    public List<User> getFollowing(@PathVariable("name") String name) {
+        return blogService.getFollowingList(name);
     }
 
+    @GetMapping(value = "/followers/{name} ")
+    public List<User> getFollowers(@PathVariable("name") String name) {
+        return blogService.getFollowersByName(name);
+    }
 }
