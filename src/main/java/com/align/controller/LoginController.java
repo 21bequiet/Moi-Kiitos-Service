@@ -68,8 +68,8 @@ public class LoginController {
         return loginService.getUser(name);
     }
 
-    @PostMapping(value = "/register/user")
-    public User registerUser(User user) {
+    @PostMapping(value = "/register")
+    public User registerUser(@RequestBody User user) {
         return loginService.registerUser(user);
     }
 }

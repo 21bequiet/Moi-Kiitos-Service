@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 /**
  * @author Jason Chen
  * @version 1.0
@@ -20,13 +21,13 @@ public class BlogController {
     private BlogServiceImpl blogService;
 
     @PostMapping(value = "/following")
-    public Following follow(Following item) {
+    public Following follow(@RequestBody Following item) {
         return blogService.follow(item);
     }
 
     @PostMapping(value = "/post")
-    public Post post(Post item) {
-        return blogService.post(item);
+    public Post post(@RequestBody Post item) {
+        return blogService.postBlog(item);
     }
 
     @RequestMapping(value = "/posts/{name}", method = RequestMethod.GET)
@@ -43,4 +44,15 @@ public class BlogController {
     public List<User> getFollowers(@PathVariable("name") String name) {
         return blogService.getFollowersByName(name);
     }
+
+    @GetMapping(value = "/following/count/{name} ")
+    public Integer getFollowingCount(@PathVariable("name") String name) {
+        return blogService.getFollowingCount(name);
+    }
+
+    @GetMapping(value = "/follower/count/{name} ")
+    public Integer getFollowerCount(@PathVariable("name") String name) {
+        return blogService.getFollowerCount(name);
+    }
+
 }

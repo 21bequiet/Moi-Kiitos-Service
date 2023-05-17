@@ -7,8 +7,6 @@ import com.align.entity.User;
 import com.align.repository.BlogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,7 +29,7 @@ public class BlogServiceImpl {
         return repository.save(item);
     }
 
-    public Post post(Post item) {
+    public Post postBlog(Post item) {
         item.setCreateTs(LocalDate.now());
         return repository.save(item);
     }
@@ -70,6 +68,29 @@ public class BlogServiceImpl {
 
     public Following getFollowingByName(String name) {
         return repository.getFollowingByName(name);
+    }
+
+    public Integer getFollowingCount(String name) {
+
+        Following searchItem = this.getFollowingByName(name);
+        List<User> followingList = searchItem.getFollowingList();
+        int count = 0;
+        if (followingList != null) {
+            count = followingList.size();
+            log.info("The retrieved following list count {}", count);
+        }
+
+        return count;
+    }
+
+    public Integer getFollowerCount(String name) {
+        List<User> followerList = this.getFollowersByName(name);
+        int count = 0;
+        if (followerList != null) {
+            count = followerList.size();
+            log.info("The retrieved follower list count {}", count);
+        }
+        return count;
     }
 
 }

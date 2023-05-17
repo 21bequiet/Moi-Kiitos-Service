@@ -30,11 +30,11 @@ public class LoginControllerTests {
         user.setEmail("Jack@163.com");
         user.setPassword("123456");
 
-       // Mockito.when(loginService.getUser(user.getUserName())).thenReturn(true);
+        Mockito.when(loginService.getUser(user.getUserName())).thenReturn(user);
 
-        //Boolean login = loginController.login(user.getUserName());
+        User item = loginController.getUser(user.getUserName());
 
-      //  Assert.assertEquals(true, login);
+        Assert.assertEquals(user.getUserName(), item.getUserName());
 
 
     }
