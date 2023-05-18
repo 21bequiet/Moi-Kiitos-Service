@@ -19,6 +19,9 @@ public class BlogServiceImpl {
     @Autowired
     private BlogRepository repository;
 
+    @Autowired
+    private LoginServiceImpl loginService;
+
     /*
        This method used to follow/unfollow users
      */
@@ -28,11 +31,27 @@ public class BlogServiceImpl {
         // if this login user have followings
         if (searchItem != null) {
             List<User> userlist = searchItem.getFollowingList();
-            userlist.add(item);
+
+            User targetUser = loginService.getUser(item.getUserName());
+            String email = "";
+            if (targetUser != null) {
+                email = targetUser.getEmail();
+                log.info("The user email is {}", email);
+            }
+            for (User user : userlist) {
+                // if the following list have this userName, means unfollow logic
+                if (user.getUserName().equals(item.getUserName())) {
+                    userlist.remove(item);
+                } else {
+                    item.setEmail(email);
+                    userlist.add(item);
+                }
+            }
             searchItem.setFollowingList(userlist);
         } else {// this login user start following 1st user
             searchItem = new Following();
             searchItem.setUserName(name);
+
             List<User> userlist = new ArrayList<>();
             userlist.add(item);
             searchItem.setFollowingList(userlist);
@@ -103,7 +122,7 @@ public class BlogServiceImpl {
 
         CountDto dto = new CountDto();
         int followingCount = this.getFollowingCount(name);
-        int followerCount =this.getFollowerCount(name);
+        int followerCount = this.getFollowerCount(name);
         dto.setFollowingCount(followingCount);
         dto.setFollowerCount(followerCount);
 
