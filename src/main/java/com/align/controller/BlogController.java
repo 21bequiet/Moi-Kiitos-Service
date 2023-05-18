@@ -35,6 +35,11 @@ public class BlogController {
         return blogService.getAllPosts(name);
     }
 
+    @RequestMapping(value = "/posts", method = RequestMethod.GET)
+    public List<Post> getAllPost() {
+        return blogService.getAllPosts();
+    }
+
     @GetMapping(value = "/followings/{name}")
     public List<User> getFollowing(@PathVariable("name") String name) {
         return blogService.getFollowingList(name);

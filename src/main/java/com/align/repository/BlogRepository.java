@@ -49,6 +49,10 @@ public class BlogRepository {
         return result;
     }
 
+    public List<Post> getPosts() {
+        return mongoTemplate.findAll(Post.class);
+    }
+
     public Following getFollowingByName(String name) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userName").is(name));

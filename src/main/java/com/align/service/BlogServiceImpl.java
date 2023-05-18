@@ -69,6 +69,12 @@ public class BlogServiceImpl {
         return feedList;
     }
 
+    public List<Post> getAllPosts() {
+        List<Post> feedList = new ArrayList<>();
+        feedList = repository.getPosts();
+        return feedList;
+    }
+
     public List<User> getFollowingList(String name) {
 
         Following searchItem = this.getFollowingByName(name);
