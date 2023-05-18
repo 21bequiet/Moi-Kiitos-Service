@@ -53,16 +53,18 @@ public class BlogServiceImpl {
 
         //get the following user list
         Following following = this.getFollowingByName(name);
-        List<User> followingList = following.getFollowingList();
         List<Post> feedList = new ArrayList<>();
-        if (followingList != null) {
-            List<String> userList = new ArrayList<>();
-            followingList.forEach(user -> userList.add(user.getUserName()));
-            // add the login user to this following user list
-            userList.add(name);
-            // get all the posts data
-            feedList = repository.getPostsByNameList(userList);
-            log.info("The retrieved feed list data {}", feedList);
+        if (following != null) {
+            List<User> followingList = following.getFollowingList();
+            if (followingList != null) {
+                List<String> userList = new ArrayList<>();
+                followingList.forEach(user -> userList.add(user.getUserName()));
+                // add the login user to this following user list
+                userList.add(name);
+                // get all the posts data
+                feedList = repository.getPostsByNameList(userList);
+                log.info("The retrieved feed list data {}", feedList);
+            }
         }
         return feedList;
     }
