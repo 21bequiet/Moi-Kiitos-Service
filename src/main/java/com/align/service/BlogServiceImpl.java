@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -25,39 +26,94 @@ public class BlogServiceImpl {
     /*
        This method used to follow/unfollow users
      */
-    public Following follow(User item, String name) {
+    public FollowDto follow(User target, String loginName) {
 
-        Following searchItem = this.getFollowingByName(name);
-        // if this login user have followings
-        if (searchItem != null) {
-            List<User> userlist = searchItem.getFollowingList();
+        FollowDto dto = new FollowDto();
+        Following following = this.updateFollowing(target, loginName);
 
-            User targetUser = loginService.getUser(item.getUserName());
-            String email = "";
-            if (targetUser != null) {
-                email = targetUser.getEmail();
-                log.info("The user email is {}", email);
-            }
-            for (User user : userlist) {
-                // if the following list have this userName, means unfollow logic
-                if (user.getUserName().equals(item.getUserName())) {
-                    userlist.remove(item);
-                } else {
-                    item.setEmail(email);
-                    userlist.add(item);
-                }
-            }
-            searchItem.setFollowingList(userlist);
-        } else {// this login user start following 1st user
-            searchItem = new Following();
-            searchItem.setUserName(name);
+        User user = new User();
+        user.setUserName(loginName);
 
-            List<User> userlist = new ArrayList<>();
-            userlist.add(item);
-            searchItem.setFollowingList(userlist);
+        Follower follower = this.updateFollower(user, target.getUserName());
+        dto.setFollowingList(following.getFollowingList());
+
+        return dto;
+    }
+
+    private Following updateFollowing(User item, String loginName) {
+
+        Following following = this.getFollowingByName(loginName);
+        if (following == null) {
+            following = new Following();
+            List<User> followingList = new ArrayList<>();
+            item.setEmail(this.getEmailByName(item.getUserName()));
+            followingList.add(item);
+            following.setFollowingList(followingList);
+            following.setUserName(loginName);
+            return following;
         }
+        // if this login user have followings
 
-        return repository.save(searchItem);
+        List<User> userlist = following.getFollowingList() == null ?
+                Collections.emptyList() : following.getFollowingList();
+
+
+        Boolean exist = false;
+        for (User user : userlist) {
+            // if the following list have this userName, means unfollow logic
+            if (user.getUserName().equals(item.getUserName())) {
+                exist = true;
+                userlist.remove(item);
+                break;
+            }
+        }
+        if (!exist) {
+            item.setEmail(this.getEmailByName(item.getUserName()));
+            userlist.add(item);
+        }
+        following.setFollowingList(userlist);
+
+        repository.save(following);
+        return following;
+    }
+
+    private String getEmailByName(String name) {
+        User targetUser = loginService.getUser(name);
+        String email = "";
+        if (targetUser != null) {
+            email = targetUser.getEmail();
+            log.info("The user email is {}", email);
+        }
+        return email;
+    }
+
+    private Follower updateFollower(User target, String name) {
+        Follower follower = new Follower();
+        List<User> userList = this.getFollowersByName(name);
+
+        Boolean exist = false;
+        for (User user : userList) {
+            // if the follower list have this userName, means unfollow logic
+            if (user.getUserName().equals(name)) {
+                exist = true;
+                userList.remove(user);
+                break;
+            }
+        }
+        if (!exist) {
+            User targetUser = loginService.getUser(target.getUserName());
+            if (targetUser != null) {
+                String email = targetUser.getEmail();
+                log.info("The login user email is {}", email);
+                target.setEmail(email);
+            }
+            userList.add(target);
+        }
+        follower.setUserName(name);
+        follower.setFollewerList(userList);
+        repository.save(follower);
+
+        return follower;
     }
 
     public Post postBlog(Post item) {

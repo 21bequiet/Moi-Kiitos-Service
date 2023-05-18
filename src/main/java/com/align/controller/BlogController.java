@@ -1,9 +1,6 @@
 package com.align.controller;
 
-import com.align.entity.CountDto;
-import com.align.entity.Following;
-import com.align.entity.Post;
-import com.align.entity.User;
+import com.align.entity.*;
 import com.align.service.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +19,7 @@ public class BlogController {
     private BlogServiceImpl blogService;
 
     @PostMapping(value = "/following/{name}")
-    public Following follow(@RequestBody User user,@PathVariable("name") String name) {
+    public FollowDto follow(@RequestBody User user, @PathVariable("name") String name) {
         return blogService.follow(user, name);
     }
 
