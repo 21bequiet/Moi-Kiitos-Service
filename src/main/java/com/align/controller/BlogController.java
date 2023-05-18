@@ -20,9 +20,9 @@ public class BlogController {
     @Autowired
     private BlogServiceImpl blogService;
 
-    @PostMapping(value = "/following")
-    public Following follow(@RequestBody Following item) {
-        return blogService.follow(item);
+    @PostMapping(value = "/following/{name}")
+    public Following follow(@RequestBody User user,@PathVariable("name") String name) {
+        return blogService.follow(user, name);
     }
 
     @PostMapping(value = "/post")
@@ -45,12 +45,12 @@ public class BlogController {
         return blogService.getFollowersByName(name);
     }
 
-    @GetMapping(value = "/following/count/{name} ")
+    @GetMapping(value = "/following/count/{name}")
     public Integer getFollowingCount(@PathVariable("name") String name) {
         return blogService.getFollowingCount(name);
     }
 
-    @GetMapping(value = "/follower/count/{name} ")
+    @GetMapping(value = "/follower/count/{name}")
     public Integer getFollowerCount(@PathVariable("name") String name) {
         return blogService.getFollowerCount(name);
     }

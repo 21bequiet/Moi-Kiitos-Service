@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @AllArgsConstructor
@@ -20,5 +20,5 @@ public class Post {
     private String userName;
     private String content;
 
-    private LocalDate createTs;
+    private LocalDateTime createTs;
 }
