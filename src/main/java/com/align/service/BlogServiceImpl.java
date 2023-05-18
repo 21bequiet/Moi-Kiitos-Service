@@ -50,6 +50,7 @@ public class BlogServiceImpl {
             followingList.add(item);
             following.setFollowingList(followingList);
             following.setUserName(loginName);
+            repository.save(following);
             return following;
         }
         // if this login user have followings
