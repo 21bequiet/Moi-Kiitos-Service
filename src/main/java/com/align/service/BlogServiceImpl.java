@@ -1,9 +1,6 @@
 package com.align.service;
 
-import com.align.entity.Follower;
-import com.align.entity.Following;
-import com.align.entity.Post;
-import com.align.entity.User;
+import com.align.entity.*;
 import com.align.repository.BlogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +99,18 @@ public class BlogServiceImpl {
         return repository.getFollowingByName(name);
     }
 
-    public Integer getFollowingCount(String name) {
+    public CountDto getCount(String name) {
+
+        CountDto dto = new CountDto();
+        int followingCount = this.getFollowingCount(name);
+        int followerCount =this.getFollowerCount(name);
+        dto.setFollowingCount(followingCount);
+        dto.setFollowerCount(followerCount);
+
+        return dto;
+    }
+
+    private Integer getFollowingCount(String name) {
 
         Following searchItem = this.getFollowingByName(name);
         int count = 0;
@@ -116,7 +124,7 @@ public class BlogServiceImpl {
         return count;
     }
 
-    public Integer getFollowerCount(String name) {
+    private Integer getFollowerCount(String name) {
         List<User> followerList = this.getFollowersByName(name);
         int count = 0;
         if (followerList != null) {

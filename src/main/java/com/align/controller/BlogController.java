@@ -1,5 +1,6 @@
 package com.align.controller;
 
+import com.align.entity.CountDto;
 import com.align.entity.Following;
 import com.align.entity.Post;
 import com.align.entity.User;
@@ -50,14 +51,10 @@ public class BlogController {
         return blogService.getFollowersByName(name);
     }
 
-    @GetMapping(value = "/following/count/{name}")
-    public Integer getFollowingCount(@PathVariable("name") String name) {
-        return blogService.getFollowingCount(name);
+    @GetMapping(value = "/count/{name}")
+    public CountDto getCount(@PathVariable("name") String name) {
+        return blogService.getCount(name);
     }
 
-    @GetMapping(value = "/follower/count/{name}")
-    public Integer getFollowerCount(@PathVariable("name") String name) {
-        return blogService.getFollowerCount(name);
-    }
 
 }
