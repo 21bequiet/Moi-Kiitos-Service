@@ -36,6 +36,18 @@ public class LoginController {
         return "OK";
     }
 
+    @RequestMapping("/user/{name}/{password}")
+    @ResponseBody
+    public String signIn(@PathVariable("name") String name, @PathVariable("password") String password) {
+
+        User user = loginService.getUser(name);
+        if(user!=null&&user.getUserName().equals(name) && user.getPassword().equals(password)){
+
+            return "OK";
+        }
+        return "{code: 401, msg: \"no auth\"}";
+    }
+
     private boolean isAuth(HttpServletRequest req, HttpServletResponse res) {
         String base6AuthStr = req.getHeader("Authorization");
         log.info("base6AuthStr= {}", base6AuthStr); // base6AuthStr=Basic dGVzdDoxMjM0NTY=

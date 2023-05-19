@@ -15,6 +15,7 @@ public class LoginServiceImpl {
     }
 
     public User registerUser(User user) {
+
         return repository.save(user);
     }
 
